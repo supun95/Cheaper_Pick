@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketplace Search URL Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .input-section {
+            margin: 30px 0;
+            text-align: center;
+        }
+        input[type="text"] {
+            width: 70%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            padding: 12px 20px;
+            font-size: 16px;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #1976D2;
+        }
+        .amazon-btn { background-color: #FF9900; }
+        .amazon-btn:hover { background-color: #E68900; }
+        .ebay-btn { background-color: #86D817; }
+        .ebay-btn:hover { background-color: #6BC400; }
+        .aliexpress-btn { background-color: #FF4747; }
+        .aliexpress-btn:hover { background-color: #E63939; }
+        .all-btn { background-color: #9C27B0; }
+        .all-btn:hover { background-color: #7B1FA2; }
+        
+        .result {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            border-left: 4px solid #2196F3;
+        }
+        .url-item {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: white;
+            border-radius: 3px;
+            border: 1px solid #ddd;
+        }
+        .url-label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .url-link {
+            word-break: break-all;
+            color: #2196F3;
+            text-decoration: none;
+        }
+        .url-link:hover {
+            text-decoration: underline;
+        }
+        .test-examples {
+            margin: 30px 0;
+        }
+        .example-btn {
+            background-color: #4CAF50;
+            margin: 5px;
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+        .example-btn:hover {
+            background-color: #45a049;
+        }
+        h1 {
+            color: #2196F3;
+            text-align: center;
+        }
+        .marketplace-buttons {
+            text-align: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔗 Marketplace Search URL Generator</h1>
+        <p>Generate direct search URLs for Amazon, eBay, and AliExpress with proper URI encoding.</p>
+        
+        <div class="input-section">
+            <input type="text" id="searchInput" placeholder="Enter a search query (e.g., 'panoramic smart camera night vision')">
+            <br><br>
+            <button onclick="generateUrls()">Generate URLs</button>
+            <button onclick="openAllSearches()" class="all-btn">Open All Marketplaces</button>
+        </div>
+        
+        <div id="urlResults"></div>
+        
+        <div class="marketplace-buttons">
+            <button onclick="openSpecificMarketplace('amazon')" class="amazon-btn">Open Amazon</button>
+            <button onclick="openSpecificMarketplace('ebay')" class="ebay-btn">Open eBay</button>
+            <button onclick="openSpecificMarketplace('aliexpress')" class="aliexpress-btn">Open AliExpress</button>
+        </div>
+        
+        <div class="test-examples">
+            <h3>Test Examples:</h3>
+            <button class="example-btn" onclick="testExample('panoramic smart camera night vision')">Camera</button>
+            <button class="example-btn" onclick="testExample('wireless bluetooth headphones')">Headphones</button>
+            <button class="example-btn" onclick="testExample('gaming laptop rgb keyboard')">Laptop</button>
+            <button class="example-btn" onclick="testExample('women summer dress')">Dress</button>
+            <button class="example-btn" onclick="testExample('running shoes men')">Shoes</button>
+        </div>
+    </div>
+
+    <script src="generateSearchUrls.js"></script>
+    <script>
+        let currentQuery = '';
+
+        function generateUrls() {
+            const input = document.getElementById('searchInput').value.trim();
+            const resultsDiv = document.getElementById('urlResults');
+            
+            if (!input) {
+                resultsDiv.innerHTML = '<div class="result">Please enter a search query.</div>';
+                return;
+            }
+            
+            currentQuery = input;
+            const urls = generateSearchUrls(input);
+            
+            resultsDiv.innerHTML = `
+                <div class="result">
+                    <h3>Generated URLs for: "${input}"</h3>
+                    <div class="url-item">
+                        <div class="url-label">Amazon:</div>
+                        <a href="${urls.amazon}" target="_blank" class="url-link">${urls.amazon}</a>
+                    </div>
+                    <div class="url-item">
+                        <div class="url-label">eBay:</div>
+                        <a href="${urls.ebay}" target="_blank" class="url-link">${urls.ebay}</a>
+                    </div>
+                    <div class="url-item">
+                        <div class="url-label">AliExpress:</div>
+                        <a href="${urls.aliexpress}" target="_blank" class="url-link">${urls.aliexpress}</a>
+                    </div>
+                </div>
+            `;
+        }
+
+        function openAllSearches() {
+            if (currentQuery) {
+                openAllMarketplaceSearches(currentQuery);
+            } else {
+                alert('Please generate URLs first or enter a search query.');
+            }
+        }
+
+        function openSpecificMarketplace(marketplace) {
+            if (currentQuery) {
+                openMarketplaceSearch(marketplace, currentQuery);
+            } else {
+                alert('Please generate URLs first or enter a search query.');
+            }
+        }
+
+        function testExample(query) {
+            document.getElementById('searchInput').value = query;
+            generateUrls();
+        }
+
+        // Allow Enter key to trigger search
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                generateUrls();
+            }
+        });
+
+        // Run console tests
+        console.log("Running search URL generation tests...");
+        testGenerateSearchUrls();
+    </script>
+</body>
+</html> 
