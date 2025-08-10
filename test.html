@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="Wireless Bluetooth Headphones | Buy Now">
+    <meta name="title" content="Premium Wireless Headphones - Free Shipping">
+    <title>Best Wireless Headphones • Amazon</title>
+</head>
+<body>
+    <h1>Premium Wireless Bluetooth Headphones with Noise Cancellation</h1>
+    
+    <div id="results"></div>
+    
+    <script src="extractProductTitle.js"></script>
+    <script>
+        // Test the function
+        const productTitle = extractProductTitle();
+        
+        // Display results
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.innerHTML = `
+            <h2>Product Title Extraction Results:</h2>
+            <p><strong>Extracted Title:</strong> "${productTitle}"</p>
+            <p><strong>Raw H1:</strong> "${document.querySelector('h1').textContent}"</p>
+            <p><strong>Raw og:title:</strong> "${document.querySelector('meta[property="og:title"]').getAttribute('content')}"</p>
+            <p><strong>Raw meta[name="title"]:</strong> "${document.querySelector('meta[name="title"]').getAttribute('content')}"</p>
+            <p><strong>Raw document.title:</strong> "${document.title}"</p>
+        `;
+        
+        console.log('Extracted product title:', productTitle);
+    </script>
+</body>
+</html> 
